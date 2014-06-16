@@ -1,0 +1,83 @@
+extends layout
+
+block content
+	h1 Welcome to <strong>Feeds-Proxy</strong>
+	
+	.container
+		#error.alert.alert-danger.smooth-hide
+			strong error
+			span#error-message
+
+		fieldset.example
+			legend Sample feeds urls
+			ul.list-unstyled
+				li http://rss.cnn.com/rss/cnn_topstories.rss		
+				li http://news.ycombinator.com/rss
+				li http://feeds2.feedburner.com/Mashable
+				li http://feeds.huffingtonpost.com/huffingtonpost/raw_feed - | <strong class="text-danger">often down</strong>
+
+		form.test-form#testform
+			h2.test-heading Test
+			.form-group
+				input.form-control(type='text', name='url', placeholder='Feeds url', autofocus='autofocus')
+			button.btn.btn-lg.btn-primary.btn-block(type='submit') Gooo!!!
+	.container.result-container.smooth-hide
+		pre
+			code#result.result.hljs.json
+
+
+block footer
+	script.
+
+		document.addEventListener('DOMContentLoaded', function() {
+
+			var resultContainer = document.querySelector('.result-container')
+			,	resultContent = document.getElementById('result')
+			,	error = document.getElementById('error')
+			,	errorMessage = document.getElementById('error-message');
+
+			var parse = function(e) {
+				if (e.preventDefault) e.preventDefault();
+
+				smoothHide(error);
+				initContent(errorMessage);
+
+				var url = document.getElementById('testform').url.value;
+
+				var request = new XMLHttpRequest();
+				request.open('GET', 'api/?q=' + url, true);
+				request.setRequestHeader('Accept', 'application/json');
+				request.onload = function() {
+
+					smoothHide(resultContainer);
+					initContent(resultContent);
+
+					if (request.status >= 200 && request.status < 400) {
+						var data = request.responseText;
+						
+						resultContent.textContent = data;
+						hljs.highlightBlock(resultContent);
+						
+						smoothShow(resultContainer);
+
+					} else {
+						errorMessage.textContent = '(' + request.status + ') ' + request.responseText;
+						smoothShow(error);
+					}
+				};
+				request.send();
+				return false;
+			};
+			document.getElementById('testform').addEventListener('submit', parse);
+		});
+		function initContent(elem) {
+			elem.textContent = '';
+		}
+		function smoothShow(elem) {
+			elem.classList.remove('smooth-hide');
+			elem.classList.add('smooth-show');
+		}
+		function smoothHide(elem) {
+			elem.classList.add('smooth-hide');
+			elem.classList.remove('smooth-show');
+		}

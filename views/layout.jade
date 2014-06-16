@@ -1,0 +1,15 @@
+doctype 5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/components/bootstrap/dist/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/components/highlightjs/styles/zenburn.css')
+		link(rel='stylesheet', href='/css/style.css')
+		script(src='http://localhost:35730/livereload.js')
+	body
+		include header
+
+		block content
+
+		script(src="/components/highlightjs/highlight.pack.js")
+		include footer
