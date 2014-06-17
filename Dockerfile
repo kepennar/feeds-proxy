@@ -2,7 +2,7 @@ from debian
 maintainer Kevin Pennarun <kevin-pennarun.org>
 
 # Update the package repository
-RUN apt-get update; apt-get upgrade -y;
+RUN apt-get update; apt-get dist-upgrade -y;
 
 # Compiling and installing node.js
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget curl python g++ make checkinstall fakeroot && \
