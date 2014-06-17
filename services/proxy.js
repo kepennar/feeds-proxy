@@ -9,12 +9,10 @@ exports.proxy = function(url) {
 	,	items= [];
 
 
-
-
 	request(
 	{
 		uri: url,
-		timeout: 5000
+		timeout: 30000
 	})
 	.on('error', function (error) {
 		console.error(error);

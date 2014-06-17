@@ -47,6 +47,12 @@ app.configure('production', function(){
 	app.use(express.errorHandler()); 
 });
 
+process.on('uncaughtException', function (err) {
+  console.error('uncaughtException:', err.message)
+  console.error(err.stack)
+  process.exit(1)
+})
+
 app.get('/', routes.index);
 app.get('/api', function(req, res, next) {
 	var url = req.query.q;
