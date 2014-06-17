@@ -29,5 +29,5 @@ expose 3000
 
 workdir feeds-proxy
 
-run npm app.js
+run NODE_ENV=production node app.js
 
