@@ -3,14 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "postinstall": "bower install"
   },
   "dependencies": {
-    "q": "~1.0.0",
     "express": "~3.3.4",
+    "feedparser": "~0.16.0",
     "jade": "~0.34.0",
-    "request": "~2.36.0",
-    "feedparser" : "~0.16.0"
+    "logfmt": "^1.1.2",
+    "q": "~1.0.0",
+    "request": "~2.36.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
