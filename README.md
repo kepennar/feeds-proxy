@@ -3,6 +3,7 @@ feeds-proxy
 
 ![Screenshot](https://raw.githubusercontent.com/kepennar/feeds-proxy/master/doc/feeds-proxy-index.png?raw=true "Screenshot")
 
+http://kepennar-proxy-feeds.herokuapp.com/
 
 #### Installation et lancement
 
