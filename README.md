@@ -1,6 +1,9 @@
 feeds-proxy
 ===========
 
+![Screenshot](https://raw.githubusercontent.com/kepennar/feeds-proxy/master/doc/feeds-proxy-index.png?raw=true "Screenshot")
+
+
 #### Installation et lancement
 
 ##### Installer les outils Node
@@ -24,6 +27,9 @@ Lancer l'application en remplacant **nb** par le nombre d'instance souhaitée
 ```Shell
 $ pm2 start app.js -i nb
 ```
+#### Vérifier le bon fonctionnement
+Se rendre sur l'index de l'application
+
 
 
 #### Monitoring (avec PM2)
