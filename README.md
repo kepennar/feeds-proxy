@@ -34,11 +34,12 @@ Si **Feeds-proxy** tourne deriière un proxy HTTP et qu'il a besoin d'accéder a
 }
 ```
 
+#### Vérifier le bon fonctionnement
+
 Lancer l'application en remplacant **nb** par le nombre d'instance souhaitée
 ```shell
 $ pm2 start app.js -i nb
 ```
-#### Vérifier le bon fonctionnement
 Se rendre sur l'index de l'application
 
 
