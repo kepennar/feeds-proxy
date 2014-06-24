@@ -1,6 +1,17 @@
 var FeedParser = require('feedparser')
 , request = require('request')
-, Q = require('q');
+, Q = require('q')
+, config = require('../config.json');
+
+
+// Initialize requests option with a 30s timeout
+var requestOptions = {
+	timeout: 30000
+};
+// Set the proxy if defined in configuration
+if (config.proxy) {
+	requestOptions.proxy = config.proxy.host + ':' + config.proxy.port;
+}
 
 
 exports.proxy = function(url) {
@@ -8,12 +19,9 @@ exports.proxy = function(url) {
 	,   feedsParser = new FeedParser()
 	,	items= [];
 
-
-	request(
-	{
-		uri: url,
-		timeout: 30000
-	})
+	requestOptions.uri = url;
+	console.log(requestOptions);
+	request(requestOptions)
 	.on('error', function (error) {
 		console.error(error);
 		deferredFeeds.reject('Error requesting remote : ' + error);
