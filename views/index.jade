@@ -47,6 +47,7 @@ block footer
 				var request = new XMLHttpRequest();
 				request.open('GET', 'api/?q=' + url, true);
 				request.setRequestHeader('Accept', 'application/json');
+				request.setRequestHeader('X-Requested-With','XMLHttpRequest');
 				request.onload = function() {
 
 					smoothHide(resultContainer);
