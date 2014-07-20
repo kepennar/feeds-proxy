@@ -22,7 +22,7 @@ run git clone https://github.com/kepennar/feeds-proxy.git
 
 # Install
 run npm install bower -g
-run cd feeds-proxy && npm install && bower install
+run cd feeds-proxy && npm install && bower install --allow-root
 
 # Expose the http port
 expose 3000
