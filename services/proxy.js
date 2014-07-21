@@ -14,7 +14,7 @@ if (config.proxy) {
 }
 
 
-exports.proxy = function(url) {
+exports.proxy = function(url, limit) {
 	var deferredFeeds = Q.defer()
 	,   feedsParser = new FeedParser()
 	,	items= [];
