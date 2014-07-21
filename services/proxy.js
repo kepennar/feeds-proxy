@@ -53,7 +53,11 @@ exports.proxy = function(url, limit) {
 			console.log(err, err.stack);
 		}
 		console.log('There was %s results', items.length);
-		deferredFeeds.resolve(items);
+		// Order by date
+		var sortedByDate= items.sort(function(f1,f2){
+			return new Date(f2.pubdate) - new Date(f1.pubdate);
+		});
+		deferredFeeds.resolve(sortedByDate.slice(0, limit));
 	});
 
 	

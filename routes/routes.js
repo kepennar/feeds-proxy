@@ -2,6 +2,7 @@
 /*
  * GET home page.
  */
+var proxyService = require('../services/proxy');
 
  exports.index = function(req, res) {
  	res.render('index', { title: 'Feeds Proxy' });
@@ -9,15 +10,16 @@
 
  exports.api = function(req, res) {
  	var url = req.query.q;
- 	if (isDefinedParam(url)) {
- 		res.send(400, 'Invalid feed url');
+ 	if (!isDefinedParam(url)) {
+ 		return res.send(400, 'Invalid feed url');
+
  	}
  	var limit = 20;
  	if (isDefinedParam(req.query.limit)) {
  		limit = req.query.limit;
  	}
-
- 	proxyService.proxy(req.query.q, limit)
+ 	console.log('Url %s, limit %s', url, limit);
+ 	proxyService.proxy(url, limit)
  	.fail(function (error) {
  		res.send(500, error);
  	})
@@ -27,5 +29,5 @@
  };
 
  var isDefinedParam = function(param) {
- 	return (param === null || !param || !param.trim());
+ 	return (param !== null && param && param.trim());
  }

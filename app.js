@@ -4,10 +4,9 @@
  */
 
  var express = require('express')
- , routes = require('./routes')
+ , routes = require('./routes/routes')
  , http = require('http')
- , path = require('path')
- , proxyService = require('./services/proxy');
+ , path = require('path');
 
  var app = express();
 
@@ -54,9 +53,7 @@ process.on('uncaughtException', function (err) {
 })
 
 app.get('/', routes.index);
-app.get('/api', routes.api) {
-	
-});
+app.get('/api', routes.api);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
