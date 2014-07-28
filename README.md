@@ -23,12 +23,24 @@ $ npm install
 ```shell
 $ bower install
 ```
+##### Paramétrer le proxy HTTP
+Si **Feeds-proxy** tourne deriière un proxy HTTP et qu'il a besoin d'accéder au web au travers de celui çi, configurer le fichier **config.json**.
+
+```json
+{
+	"proxy": {
+		"host": "http://proxy.com",
+		"port": "8080"
+	}
+}
+```
+
+#### Vérifier le bon fonctionnement
 
 Lancer l'application en remplacant **nb** par le nombre d'instance souhaitée
 ```shell
 $ pm2 start app.js -i nb
 ```
-#### Vérifier le bon fonctionnement
 Se rendre sur l'index de l'application
 
 

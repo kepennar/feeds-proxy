@@ -1,0 +1,7 @@
+{
+	"proxy": {
+		"host": "http://host",
+		"port": 8080,
+		"exclusions": "exclusion.com,another.org"
+	}
+}

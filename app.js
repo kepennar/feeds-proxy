@@ -4,17 +4,16 @@
  */
 
  var express = require('express')
- , routes = require('./routes')
+ , routes = require('./routes/routes')
  , http = require('http')
- , path = require('path')
- , proxyService = require('./services/proxy');
+ , path = require('path');
 
  var app = express();
 
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', true);
+	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'GET');
 	res.header('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -54,19 +53,7 @@ process.on('uncaughtException', function (err) {
 })
 
 app.get('/', routes.index);
-app.get('/api', function(req, res, next) {
-	var url = req.query.q;
-	if (url === null || !url || !url.trim()) {
-		res.send(400, 'Invalid feed url');
-	}
-	proxyService.proxy(req.query.q)
-	.fail(function (error) {
-		res.send(500, error);
-	})
-	.done(function(items) {
-		res.send(200, items);
-	});
-});
+app.get('/api', routes.api);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
@@ -79,7 +66,7 @@ function logErrors(err, req, res, next) {
 }
 function clientErrorHandler(err, req, res, next) {
 	if (req.xhr) {
-		res.send(500, { error: 'Something blew up!' });
+		res.send(500, { error: err });
 	} else {
 		next(err);
 	}

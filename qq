@@ -1,0 +1,85 @@
+[1mdiff --git a/app.js b/app.js[m
+[1mindex 9255fd4..59d9686 100644[m
+[1m--- a/app.js[m
+[1m+++ b/app.js[m
+[36m@@ -4,10 +4,9 @@[m
+  */[m
+ [m
+  var express = require('express')[m
+[31m- , routes = require('./routes')[m
+[32m+[m[32m , routes = require('./routes/routes')[m
+  , http = require('http')[m
+[31m- , path = require('path')[m
+[31m- , proxyService = require('./services/proxy');[m
+[32m+[m[32m , path = require('path');[m
+ [m
+  var app = express();[m
+ [m
+[36m@@ -54,9 +53,7 @@[m [mprocess.on('uncaughtException', function (err) {[m
+ })[m
+ [m
+ app.get('/', routes.index);[m
+[31m-app.get('/api', routes.api) {[m
+[31m-	[m
+[31m-});[m
+[32m+[m[32mapp.get('/api', routes.api);[m
+ [m
+ http.createServer(app).listen(app.get('port'), function(){[m
+ 	console.log("Express server listening on port " + app.get('port'));[m
+[1mdiff --git a/routes/routes.js b/routes/routes.js[m
+[1mindex 8c1569f..ac29b2e 100644[m
+[1m--- a/routes/routes.js[m
+[1m+++ b/routes/routes.js[m
+[36m@@ -2,6 +2,7 @@[m
+ /*[m
+  * GET home page.[m
+  */[m
+[32m+[m[32mvar proxyService = require('../services/proxy');[m
+ [m
+  exports.index = function(req, res) {[m
+  	res.render('index', { title: 'Feeds Proxy' });[m
+[36m@@ -9,15 +10,16 @@[m
+ [m
+  exports.api = function(req, res) {[m
+  	var url = req.query.q;[m
+[31m- 	if (isDefinedParam(url)) {[m
+[31m- 		res.send(400, 'Invalid feed url');[m
+[32m+[m[41m [m	[32mif (!isDefinedParam(url)) {[m
+[32m+[m[41m [m		[32mreturn res.send(400, 'Invalid feed url');[m
+[32m+[m
+  	}[m
+  	var limit = 20;[m
+  	if (isDefinedParam(req.query.limit)) {[m
+  		limit = req.query.limit;[m
+  	}[m
+[31m-[m
+[31m- 	proxyService.proxy(req.query.q, limit)[m
+[32m+[m[41m [m	[32mconsole.log('Url %s, limit %s', url, limit);[m
+[32m+[m[41m [m	[32mproxyService.proxy(url, limit)[m
+  	.fail(function (error) {[m
+  		res.send(500, error);[m
+  	})[m
+[36m@@ -27,5 +29,5 @@[m
+  };[m
+ [m
+  var isDefinedParam = function(param) {[m
+[31m- 	return (param === null || !param || !param.trim());[m
+[32m+[m[41m [m	[32mreturn (param !== null && param && param.trim());[m
+  }[m
+[1mdiff --git a/services/proxy.js b/services/proxy.js[m
+[1mindex 0d90386..e6bfaf3 100644[m
+[1m--- a/services/proxy.js[m
+[1m+++ b/services/proxy.js[m
+[36m@@ -53,7 +53,11 @@[m [mexports.proxy = function(url, limit) {[m
+ 			console.log(err, err.stack);[m
+ 		}[m
+ 		console.log('There was %s results', items.length);[m
+[31m-		deferredFeeds.resolve(items);[m
+[32m+[m		[32m// Order by date[m
+[32m+[m		[32mvar sortedByDate= items.sort(function(f1,f2){[m
+[32m+[m			[32mreturn new Date(f2.pubdate) - new Date(f1.pubdate);[m
+[32m+[m		[32m});[m
+[32m+[m		[32mdeferredFeeds.resolve(sortedByDate.slice(0, limit));[m
+ 	});[m
+ [m
+ 	[m
