@@ -7,10 +7,13 @@ var FeedParser = require('feedparser')
 // Initialize requests option with a 30s timeout
 var requestOptions = {
 	timeout: 30000
-};
+}, httpProxy = null, exclusions = null;
 // Set the proxy if defined in configuration
 if (config.proxy) {
-	requestOptions.proxy = config.proxy.host + ':' + config.proxy.port;
+	httpProxy = config.proxy.host + ':' + config.proxy.port;
+	if (config.proxy.exclusions) {
+		exclusions = new RegExp(config.proxy.exclusions.replace(',', '|'));
+	}
 }
 
 
@@ -19,6 +22,11 @@ exports.proxy = function(url, limit) {
 	,   feedsParser = new FeedParser()
 	,	items= [];
 
+	if (!url.toString().match(exclusions)) {
+		requestOptions.proxy= httpProxy;
+	} else {
+		requestOptions.proxy= null;
+	}
 	requestOptions.uri = url;
 	console.log(requestOptions);
 	request(requestOptions)
